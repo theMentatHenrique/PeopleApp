@@ -1,20 +1,50 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { createAppContainer } from "react-navigation";
+import {createStackNavigator} from 'react-navigation-stack';
+import PeopleDetailPage from "./src/Pages/PeopleDetailPage";
+import PeoplePage from "./src/Pages/PeoplePage.1";
+import { captalizeFirstLetter } from "./src/Util";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+const AppNavigator=createStackNavigator({
+
+'Main':{
+    screen:PeoplePage,
+    headerTitleStyleMain:{
+        color:'#ffffff',
+        fontSize:30,
+        flexGrow:1,
+    }
+},
+
+'PeopleDetail':{
+
+    screen:PeopleDetailPage,
+    navigationOptions:({navigation})=>{
+      const peopleName=  captalizeFirstLetter(navigation.state.params.people.name.first);
+        return({
+            title:peopleName,
+            headerTitleStyle:{
+                color:'#ffffff',
+                fontSize:30,
+                flexGrow:1,  
+            }
+
+        }) ;
+        
+    }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+},{
+    defaultNavigationOptions:{
+        title:'People',
+        headerTintColor:'#ffffff',
+        headerStyle:{
+            backgroundColor:'#8a2be2',
+            borderBottomWidth:1,
+            borderBottomColor:'#ffffff'
+        },    
+    }
 });
+
+const Appcontainer=createAppContainer(AppNavigator);
+
+export default Appcontainer;
